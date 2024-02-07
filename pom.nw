@@ -1,0 +1,648 @@
+
+<<desc>>=
+lilprox is a fork of LittleProxy, and LittleProxy is a high performance HTTP proxy written in Java and using the Netty networking framework.
+@
+
+<<licenses>>=
+<license>
+    <name>The Apache Software License, Version 2.0</name>
+    <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+</license>
+@
+
+<<create pom.xml>>=
+CHMOD='chmod 0444' nofake.sh --error -Rpom.xml -opom.xml build.nw pom.nw
+@
+
+<<pom body>>=
+<groupId>org.littleshoot</groupId>
+<artifactId>lilprox</artifactId>
+<version>0.0.1-SNAPSHOT</version>
+<name>${project.groupId}.${project.artifactId}</name>
+<description><<desc>></description>
+<licenses>
+    <<licenses>>
+</licenses>
+<inceptionYear>2009</inceptionYear>
+<properties>
+    <<properties>>
+</properties>
+<dependencyManagement>
+    <<dependencyManagement>>
+</dependencyManagement>
+<<repositories>>
+<dependencies>
+    <<dependencies>>
+</dependencies>
+<build>
+    <finalName>${project.artifactId}</finalName>
+    <<pluginManagement>>
+    <plugins>
+        <<plugins>>
+    </plugins>
+</build>
+<profiles>
+    <<profiles>>
+</profiles>
+@
+
+<<pom.xml>>=
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <<pom body>>
+</project>
+@
+
+use UTF-8 for everything
+
+<<properties>>=
+<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+@
+
+<<properties>>=
+<!-- https://mvnrepository.com/artifact/org.openjdk.nashorn/nashorn-core -->
+<nashorn-core.version>15.4</nashorn-core.version>
+@
+
+https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-bom
+
+Apache Log4j Bill-of-Materials 
+
+<<dependencyManagement dependency>>=
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-bom</artifactId>
+    <version>2.22.1</version>
+    <type>pom</type>
+    <scope>import</scope>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/io.netty/netty-bom
+
+<<dependencyManagement dependency>>=
+<dependency>
+    <groupId>io.netty</groupId>
+    <artifactId>netty-bom</artifactId>
+    <version>4.1.106.Final</version>
+    <type>pom</type>
+    <scope>import</scope>
+</dependency>
+@
+
+<<dependencyManagement>>=
+<dependencies>
+    <<dependencyManagement dependency>>
+</dependencies>
+@
+
+https://mvnrepository.com/artifact/log4j/log4j
+
+Legacy version of Log4J logging framework. Log4J 1 has reached its end of life
+and is no longer officially supported. It is recommended to migrate to Log4J 2.
+
+NOTE: version 1.2.17 from 2012 is listed as having 5 vulnerabilities
+
+<<exclude log4j:log4j>>=
+<exclusion>
+    <groupId>log4j</groupId>
+    <artifactId>log4j</artifactId>
+</exclusion>
+@
+
+used as dependency by org.littleshoot:dnssec4j
+
+https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
+https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+
+Implementation for Apache Log4J, a highly configurable logging tool that
+focuses on performance and low garbage generation. It has a plugin architecture
+that makes it extensible and supports asynchronous logging based on LMAX
+Disruptor.
+
+<<dependencies SKIP>>=
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-api</artifactId>
+</dependency>
+@
+
+<<dependencies SKIP>>=
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
+
+<<slf4j version>>=
+1.7.36
+@
+
+[WARNING] The artifact org.slf4j:slf4j-log4j12:jar:1.7.36 has been relocated to org.slf4j:slf4j-reload4j:jar:1.7.36
+
+Also used by org.littleshoot/dnssec4j, but version 1.7.2 from Oct 11, 2012,
+prior to relocation.
+
+<<exclude org.slf4j:slf4j-log4j12>>=
+<exclusion>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-log4j12</artifactId>
+</exclusion>
+@
+
+<<dependencies RELOCATED>>=
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-log4j12</artifactId>
+    <version><<slf4j version>></version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.slf4j/slf4j-reload4j
+
+SLF4J Reload4j Provider
+
+<<dependencies>>=
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-reload4j</artifactId>
+    <version><<slf4j version>></version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+
+<<dependencies>>=
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-api</artifactId>
+    <version><<slf4j version>></version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/commons-cli/commons-cli
+
+Apache Commons CLI provides a simple API for presenting, processing and
+validating a Command Line Interface.
+
+<<dependencies>>=
+<dependency>
+    <groupId>commons-cli</groupId>
+    <artifactId>commons-cli</artifactId>
+    <version>1.6.0</version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/io.netty/netty-codec-http
+
+<<dependencies>>=
+<dependency>
+    <groupId>io.netty</groupId>
+    <artifactId>netty-codec-http</artifactId>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/io.netty/netty-transport-udt
+
+<<dependencies>>=
+<dependency>
+    <groupId>io.netty</groupId>
+    <artifactId>netty-transport-udt</artifactId>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15to18
+
+<<dependencies SKIP>>=
+<dependency>
+    <groupId>org.bouncycastle</groupId>
+    <artifactId>bcprov-jdk15to18</artifactId>
+    <version>1.77</version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.littleshoot/dnssec4j
+
+DNSSEC4J is a higher level wrapper around the DNSSEC primitives in dnsjava
+allowing applications to more easily integrate DNSSEC into their applications.
+
+This is a very old package, with version 0.1.6 being from May 28, 2013.
+
+<<exclude org.littleshoot:dnsjava>>=
+<exclusion>
+    <groupId>org.littleshoot</groupId>
+    <artifactId>dnsjava</artifactId>
+</exclusion>
+@
+
+<<dependencies>>=
+<dependency>
+    <groupId>org.littleshoot</groupId>
+    <artifactId>dnssec4j</artifactId>
+    <version>0.1.6</version>
+    <optional>true</optional>
+    <exclusions>
+        <<exclude org.littleshoot:dnsjava>>
+        <<exclude org.slf4j:slf4j-log4j12>>
+        <<exclude log4j:log4j>>
+    </exclusions>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.apache.commons/commons-math3
+
+<<dependencies SKIP>>=
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-math3</artifactId>
+    <version>3.6.1</version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+
+<<dependencies>>=
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+    <version>3.14.0</version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.apache.commons/commons-collections
+
+<<dependencies SKIP>>=
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-collections</artifactId>
+    <version>3.2</version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.hsqldb/hsqldb
+https://mvnrepository.com/artifact/org.hsqldb/sqltool
+
+<<dependencies SKIP>>=
+<dependency>
+    <groupId>org.hsqldb</groupId>
+    <artifactId>hsqldb</artifactId>
+    <version>2.7.2</version>
+</dependency>
+@
+
+<<dependencies SKIP>>=
+<dependency>
+    <groupId>org.hsqldb</groupId>
+    <artifactId>tools</artifactId>
+    <version>2.7.2</version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.abcl/abcl
+https://mvnrepository.com/artifact/org.abcl/abcl-contrib
+
+<<properties SKIP>>=
+<abcl.version>1.9.2</abcl.version>
+@
+
+<<dependencies SKIP>>=
+<dependency>
+    <groupId>org.abcl</groupId>
+    <artifactId>abcl</artifactId>
+    <version>${abcl.version}</version>
+</dependency>
+@
+
+<<dependencies SKIP>>=
+<dependency>
+    <groupId>org.abcl</groupId>
+    <artifactId>abcl-contrib</artifactId>
+    <version>${abcl.version}</version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/com.google.guava/guava
+
+"Guava is a suite of core and expanded libraries that include utility classes, Google's collections, I/O classes, and much more."
+
+<version>23.0</version>
+<version>33.0.0-jre</version>
+
+<<dependencies>>=
+<dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>33.0.0-jre</version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/junit/junit
+
+JUnit is a unit testing framework to write and run repeatable automated tests
+on Java. It provides a robust environment to write, organize, and execute
+automated tests, ensuring code reliability and repeatability. Its user-friendly
+annotations and assert methods facilitate the development and running of test
+cases, making it a foundational tool for Java developers focusing on quality
+assurance and test-driven development.
+
+<<dependencies>>=
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.13.2</version>
+    <scope>test</scope>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.hamcrest/hamcrest-core
+
+Core Hamcrest API - deprecated, please use "hamcrest" instead
+
+<<dependencies>>=
+<dependency>
+    <groupId>org.hamcrest</groupId>
+    <artifactId>hamcrest-core</artifactId>
+    <version>1.3</version>
+    <scope>test</scope>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.hamcrest/hamcrest-library
+
+A library of Hamcrest matchers - deprecated, please use "hamcrest" instead
+
+<<dependencies>>=
+<dependency>
+    <groupId>org.hamcrest</groupId>
+    <artifactId>hamcrest-library</artifactId>
+    <version>1.3</version>
+    <scope>test</scope>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+
+HTTPClient provides an efficient, up-to-date, and feature-rich package
+implementing the client side of the most recent HTTP standards and
+recommendations.
+
+<<dependencies>>=
+<dependency>
+    <groupId>org.apache.httpcomponents</groupId>
+    <artifactId>httpclient</artifactId>
+    <version>4.5.14</version>
+    <scope>test</scope>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.mock-server/mockserver-netty
+
+MockServer & Proxy Netty
+
+<<dependencies>>=
+<dependency>
+    <groupId>org.mock-server</groupId>
+    <artifactId>mockserver-netty</artifactId>
+    <version>3.10.8</version>
+    <scope>test</scope>
+    <exclusions>
+        <exclusion>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.mockito/mockito-core
+
+Mockito mock objects library core API and implementation
+
+<<dependencies>>=
+<dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-core</artifactId>
+    <version>2.7.22</version>
+    <scope>test</scope>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server
+
+The legacy jetty server artifact.
+
+<<dependencies>>=
+<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-server</artifactId>
+    <version>8.1.22.v20160922</version>
+    <scope>test</scope>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+
+Selenium provides support for the automation of web browsers. It provides
+extensions to emulate user interaction with browsers, a distribution server for
+scaling browser allocation, and the infrastructure for implementations of the
+W3C WebDriver specification.
+
+<<dependencies>>=
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>2.53.1</version>
+    <scope>test</scope>
+    <exclusions>
+        <exclusion>
+            <groupId>io.netty</groupId>
+            <artifactId>netty</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+@
+
+<<repositories>>=
+<repositories>
+    <repository>
+        <id>my-local-repos</id>
+        <url>file://${basedir}/repos</url>
+    </repository>
+</repositories>
+@
+
+responsible for creation of target/lilprox-config.inc.sh use by lilprox.sh
+
+<<plugins>>=
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-resources-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>copy-resources</id>
+            <phase>package</phase>
+            <goals>
+                <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+                <outputDirectory>${project.build.directory}</outputDirectory>
+                <overwrite>true</overwrite>
+                <resources>
+                    <resource>
+                        <directory>src/main/scripts</directory>
+                        <filtering>true</filtering>
+                        <includes>
+                            <include>*.inc.sh</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+@
+
+mdep.classpath is used by lilprox.sh and automations
+
+copy-dependencies is used to create distributable executable jars
+
+<<plugins>>=
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-dependency-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>build-classpath</id>
+            <phase>initialize</phase>
+            <goals>
+                <goal>build-classpath</goal>
+            </goals>
+            <configuration>
+                <includeScope>runtime</includeScope>
+                <outputFile>${project.build.directory}/mdep.classpath</outputFile>
+                <regenerateFile>true</regenerateFile>
+            </configuration>
+        </execution>
+        <execution>
+            <id>copy-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals>
+                <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+                <includeScope>runtime</includeScope>
+                <outputDirectory>${project.build.directory}/${project.artifactId}-libs</outputDirectory>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+@
+
+setup the executable jar
+
+<<plugins>>=
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-jar-plugin</artifactId>
+    <configuration>
+        <archive>
+            <manifest>
+                <addClasspath>true</addClasspath>
+                <classpathPrefix>${project.artifactId}-libs/</classpathPrefix>
+                <mainClass><<main class>></mainClass>
+            </manifest>
+        </archive>
+    </configuration>
+</plugin>
+@
+
+<<pluginManagement>>=
+<pluginManagement>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>3.6.1</version>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.2.0</version>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>2.4</version>
+        </plugin>
+    </plugins>
+</pluginManagement>
+@
+
+<<profiles>>=
+<profile>
+  <id>java8</id>
+  <activation>
+    <jdk>1.8</jdk>
+  </activation>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</profile>
+@
+
+<<profiles>>=
+<profile>
+  <id>java11</id>
+  <activation>
+    <jdk>11</jdk>
+  </activation>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</profile>
+@
+
+<<profiles>>=
+<profile>
+  <id>java17</id>
+  <activation>
+    <jdk>17</jdk>
+  </activation>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>17</source>
+          <target>17</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</profile>
+@

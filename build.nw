@@ -1,0 +1,185 @@
+
+Simply run 'nofake build.nw' for build instructions, pipe
+to 'sh' to execute.
+
+The 'nofake' utility is available from [coolscripts] [1].
+
+[1]: https://github.com/ctarbide/coolscripts
+
+<<*>>=
+#!/bin/sh
+nofake --error -Rbuild shell.nw build.nw
+# nofake --error -R'run jar' shell.nw build.nw
+# nofake --error -R'run sh' shell.nw build.nw
+# nofake --error -Rinstall shell.nw build.nw
+# nofake --error -R'dependency tree compile' shell.nw build.nw
+# nofake --error -R'dependency tree runtime' shell.nw build.nw
+# nofake --error -R'dependency tree test' shell.nw build.nw
+# nofake --list-roots build.nw
+@
+
+Built using:
+
+<<java versions>>=
+- openjdk version "1.8.0_322"
+@
+
+<<maven versions>>=
+- Apache Maven 3.6.3 (cecedd343002696d0abb50b32b541b8a6ba2883f)
+@
+
+<<main class>>=
+org.littleshoot.proxy.Launcher
+@
+
+<<install prefix>>=
+~/local/bin
+@
+
+<<java8 home>>=
+/usr/lib/jvm/java-1.8-openjdk
+@
+
+<<java11 home>>=
+/usr/lib/jvm/openjdk11
+@
+
+<<java17 home>>=
+/usr/lib/jvm/openjdk17
+@
+
+<<maven args - clean package>>=
+--fail-fast \
+-DskipTests -Dmaven.javadoc.skip=true \
+-Dmdep.outputFile=target/mdep.classpath \
+-Dmdep.regenerateFile=true \
+-DincludeScope=runtime \
+dependency:build-classpath \
+clean package
+@
+
+<<add JAVA_HOME to PATH>>=
+PATH=${JAVA_HOME}/bin:${PATH}
+test -x "${JAVA_HOME}/bin/java" || die 1 "Error, 'java' not found in JAVA_HOME bin directory."
+test -x "${JAVA_HOME}/bin/javac" || die 1 "Error, 'javac' not found in JAVA_HOME bin directory."
+export JAVA_HOME
+@
+
+<<build preamble>>=
+nofake --error -R'create pom.xml' pom.nw | sh
+nofake --error -R'create lilprox.sh' lilprox.nw | sh
+@
+
+<<build>>=
+<<build java8>>
+@
+
+<<run jar>>=
+<<sh preamble>>
+JAVA_HOME=<<java8 home>>
+<<add JAVA_HOME to PATH>>
+java -jar target/lilprox.jar
+@
+
+no need to set java path in lilprox.sh
+
+<<run sh>>=
+<<sh preamble>>
+exec ./lilprox.sh
+@
+
+<<build java8>>=
+<<mvn preamble java8>>
+mvn <<maven args - clean package>>
+@
+
+<<build java11>>=
+<<mvn preamble java11>>
+mvn <<maven args - clean package>>
+@
+
+<<build java17>>=
+<<mvn preamble java17>>
+mvn <<maven args - clean package>>
+@
+
+<<install>>=
+<<sh preamble>>
+mkdir -pv <<install prefix>>
+: TODO
+@
+
+<<perl list classpath>>=
+perl -l -072 -pe1 target/mdep.classpath
+@
+
+<<list classpath>>=
+#!/bin/sh
+<<perl list classpath>>
+@
+
+https://maven.apache.org/plugins/maven-dependency-plugin/
+
+<<dependency tree compile>>=
+<<dependency tree compile java8>>
+<<dependency tree runtime>>=
+<<dependency tree runtime java8>>
+<<dependency tree test>>=
+<<dependency tree test java8>>
+@
+
+<<mvn preamble java8>>=
+<<sh preamble>>
+<<build preamble>>
+JAVA_HOME=<<java8 home>>
+<<add JAVA_HOME to PATH>>
+@
+
+<<mvn preamble java11>>=
+<<sh preamble>>
+<<build preamble>>
+JAVA_HOME=<<java11 home>>
+<<add JAVA_HOME to PATH>>
+@
+
+<<mvn preamble java17>>=
+<<sh preamble>>
+<<build preamble>>
+JAVA_HOME=<<java17 home>>
+<<add JAVA_HOME to PATH>>
+@
+
+<<dependency tree compile java8>>=
+<<sh preamble java8>>
+mvn -Dscope=compile dependency:tree
+@
+
+<<dependency tree runtime java8>>=
+<<sh preamble java8>>
+mvn -Dscope=runtime dependency:tree
+@
+
+<<dependency tree test java8>>=
+<<sh preamble java8>>
+mvn -Dscope=test dependency:tree
+@
+
+<<indent pom.xml>>=
+<<sh preamble>>
+tidy -quiet -asxml -xml -indent -wrap 1024 -modify pom.xml
+@
+
+other useful maven commands:
+
+    mvn dependency:resolve -Dclassifier=sources
+
+    mvn help:effective-pom -Doutput=effective-pom.xml
+
+nofake -R'list all files in jars' build.nw | sh
+
+nofake -R'list all files in jars' build.nw | sh | sh > target/all-files-in-jars.txt
+
+<<list all files in jars>>=
+<<perl list classpath>> | fgrep .jar | perl -l0 -pe1 | xargs -r0 -Iiii -n1 \
+    echo "jar -tf 'iii' | perl -slne'print(qq{\${p}: \${_}})' -- -p='iii'"
+@

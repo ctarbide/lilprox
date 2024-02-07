@@ -16,3 +16,5 @@ LittleProxy.pro
 /bin
 *.jks
 performance/site/
+*.stamp
+/lilprox.sh
