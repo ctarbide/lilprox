@@ -18,3 +18,4 @@ LittleProxy.pro
 performance/site/
 *.stamp
 /lilprox.sh
+/sandbox

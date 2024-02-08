@@ -217,11 +217,75 @@ https://mvnrepository.com/artifact/io.netty/netty-transport-udt
 
 https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15to18
 
+Bouncy Castle Provider
+
+The Bouncy Castle Crypto package is a Java implementation of cryptographic
+algorithms. This jar contains JCE provider and lightweight API for the Bouncy
+Castle Cryptography APIs for JDK 1.5 to JDK 1.8.
+
+<<bouncycastle version>>=
+1.77
+@
+
 <<dependencies SKIP>>=
 <dependency>
     <groupId>org.bouncycastle</groupId>
     <artifactId>bcprov-jdk15to18</artifactId>
-    <version>1.77</version>
+    <version><<bouncycastle version>></version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
+
+Bouncy Castle Provider
+
+The Bouncy Castle Crypto package is a Java implementation of cryptographic
+algorithms. This jar contains JCE provider and lightweight API for the Bouncy
+Castle Cryptography APIs for JDK 1.8 and up.
+
+<<dependencies>>=
+<dependency>
+    <groupId>org.bouncycastle</groupId>
+    <artifactId>bcprov-jdk18on</artifactId>
+    <version><<bouncycastle version>></version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on
+
+Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs
+
+The Bouncy Castle Java APIs for CMS, PKCS, EAC, TSP, CMP, CRMF, OCSP, and
+certificate generation. This jar contains APIs for JDK 1.5 and up. The APIs can
+be used in conjunction with a JCE/JCA provider such as the one provided with
+the Bouncy Castle Cryptography APIs.
+
+This artifact was moved to: org.bouncycastle » bcpkix-jdk18on
+
+Latest version is 1.70 from Dec 01, 2021
+
+<<dependencies SKIP>>=
+<dependency>
+    <groupId>org.bouncycastle</groupId>
+    <artifactId>bcpkix-jdk15on</artifactId>
+    <version>1.70</version>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk18on
+
+Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs
+
+The Bouncy Castle Java APIs for CMS, PKCS, EAC, TSP, CMP, CRMF, OCSP, and
+certificate generation. This jar contains APIs for JDK 1.8 and up. The APIs can
+be used in conjunction with a JCE/JCA provider such as the one provided with
+the Bouncy Castle Cryptography APIs.
+
+<<dependencies>>=
+<dependency>
+    <groupId>org.bouncycastle</groupId>
+    <artifactId>bcpkix-jdk18on</artifactId>
+    <version><<bouncycastle version>></version>
 </dependency>
 @
 
@@ -463,6 +527,23 @@ W3C WebDriver specification.
             <artifactId>netty</artifactId>
         </exclusion>
     </exclusions>
+</dependency>
+@
+
+https://mvnrepository.com/artifact/commons-io/commons-io
+
+Apache Commons IO
+
+The Apache Commons IO library contains utility classes, stream implementations,
+file filters, file comparators, endian transformation classes, and much more.
+
+- Version 2.15.1 is from Nov 29, 2023.
+
+<<dependencies>>=
+<dependency>
+    <groupId>commons-io</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>2.15.1</version>
 </dependency>
 @
 
